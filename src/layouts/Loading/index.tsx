@@ -1,9 +1,15 @@
 import style from './style.module.scss';
 
-export default function Loading() {
+interface LoadingProps {
+  message?: string;
+}
+
+export default function Loading({
+  message='Carregando..'
+}: LoadingProps) {
   return (
     <div id={style.Container}>
-      Carregando..
+      {message}
     </div>
   );
 }
