@@ -1,0 +1,30 @@
+#Container {
+  & {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    
+    height: 50px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #4C92EE;
+    color: #FDFDFD;
+    transition: filter .2s;
+
+    &:hover {
+      cursor: pointer;
+      filter: brightness(80%);
+    }
+
+    &.ContainerDisabled {
+      filter: brightness(80%);
+
+      &:hover {
+        cursor: not-allowed;
+      }
+    }
+  }
+}

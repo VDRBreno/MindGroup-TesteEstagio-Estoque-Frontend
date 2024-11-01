@@ -1,0 +1,12 @@
+#Container {
+  & {
+    color: #4C92EE;
+    font-weight: 600;
+    transition: filter .2s;
+
+    &:hover {
+      cursor: pointer;
+      filter: brightness(70%);
+    }
+  }
+}
