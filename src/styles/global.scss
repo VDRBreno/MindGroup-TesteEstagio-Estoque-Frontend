@@ -35,13 +35,11 @@ body, input, button, textarea, select, a {
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
-  background-color: darkred;
 }
 ::-webkit-scrollbar-thumb {
-  background: #E0E0E0;
+  background: #979797;
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #979797;
   cursor: pointer;
 }
