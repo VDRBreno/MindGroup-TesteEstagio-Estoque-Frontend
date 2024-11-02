@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { FaList } from 'react-icons/fa';
-import { BsFillGridFill } from 'react-icons/bs';
-
 import Header from '@/layouts/Header';
-import Button from '@/components/Button';
 import Input from '@/components/Input';
 import Select, { IOption } from '@/components/Select';
 import PageController from '@/components/PageController';
@@ -29,7 +25,6 @@ export default function Home() {
   ];
   const limitProductsPerPage = 50;
 
-  const [productsLayout, setProductsLayout] = useState<'grid' | 'table'>('grid');
   const [searchProductName, setSearchProductName] = useState('');
   const [selectedOrderBy, setSelectedOrderBy] = useState(orderBySelectOptions[0].id);
   const [currentPage, setCurrentPage] = useState(1);
@@ -93,14 +88,6 @@ export default function Home() {
               maxWidth: '500px'
             }}
           />
-          <div className={styles.InLine}>
-            <Button onClick={() => setProductsLayout('table')} style={{ backgroundColor: productsLayout==='table'?'#4C92EE':'#D9D9D9' }}>
-              <FaList size={18} color={productsLayout==='table'?'#FFFFFF':'#AFAFAF'} />
-            </Button>
-            <Button onClick={() => setProductsLayout('grid')} style={{ backgroundColor: productsLayout==='grid'?'#4C92EE':'#D9D9D9' }}>
-              <BsFillGridFill size={18} color={productsLayout==='grid'?'#FFFFFF':'#AFAFAF'} />
-            </Button>
-          </div>
         </div>
         <div className={styles.InLine} style={{ justifyContent: 'space-between' }}>
           <div className={styles.InLine} style={{ width: '100%' }}>
@@ -122,18 +109,11 @@ export default function Home() {
         <div style={{ height: '20px' }} />
       
         {products.length>0 ? (
-          productsLayout==='grid' ? (
-            <div className={styles.ProductsGrid}>
-              {products.map(product => (
-                <Product key={product.id} product={product} updateProductList={getProducts} />
-              ))}
-            </div>
-          )
-          : (
-            <div>
-              table
-            </div>
-          )
+          <div className={styles.ProductsGrid}>
+            {products.map(product => (
+              <Product key={product.id} product={product} updateProductList={getProducts} />
+            ))}
+          </div>
         ) : <span className={styles.NoProductFound}>Nenhum produto encontrado</span>}
       </div>
     </div>
