@@ -57,8 +57,8 @@ export default function EditProductModal({
 
       const { data } = await api.patch('/product/update', {
         id: productState.id,
-        name: productState.name,
-        description: productState.description,
+        name: productState.name.trim(),
+        description: productState.description.trim(),
         value: productState.value,
         image_base64: imageFile?imageData:undefined
       }, {
@@ -117,7 +117,7 @@ export default function EditProductModal({
         <span>Nome:</span>
         <Input
           value={productState.name}
-          onChange={value => setProductState(state => ({...state, name: value.trim() }))}
+          onChange={value => setProductState(state => ({...state, name: value }))}
         />
       </div>
 
@@ -125,7 +125,7 @@ export default function EditProductModal({
         <span>Descrição:</span>
         <Input
           value={productState.description}
-          onChange={value => setProductState(state => ({...state, description: value.trim() }))}
+          onChange={value => setProductState(state => ({...state, description: value }))}
         />
       </div>
 
