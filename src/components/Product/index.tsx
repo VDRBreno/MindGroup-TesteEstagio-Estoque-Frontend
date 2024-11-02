@@ -132,7 +132,7 @@ export default function Product({
         </Button>
       </div>
       <div className={styles.ImageContainer}>
-        <img className={styles.Image} src={api.defaults.baseURL+'/images/'+product.image_name} alt={product.image_name} />
+        <img className={styles.Image} src={api.defaults.baseURL+'/images/'+product.image_name+`?${new Date().getTime()}`} alt={product.image_name}  />
       </div>
       <div className={styles.Content}>
         <span className={styles.CreatedAt}>{new Date(product.created_at).toLocaleString()}</span>

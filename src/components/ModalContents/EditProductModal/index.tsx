@@ -111,7 +111,7 @@ export default function EditProductModal({
       <div className={styles.ImageContainer}>
         {imageFile
           ? <img className={styles.Image} src={'data:image/png;base64,'+imageData} alt='custom-image' />
-          : <img className={styles.Image} src={api.defaults.baseURL+'/images/'+product.image_name} alt='imagem' />
+          : <img className={styles.Image} src={api.defaults.baseURL+'/images/'+product.image_name+`?${new Date().getTime()}`} alt='imagem' />
         }
       </div>
 
