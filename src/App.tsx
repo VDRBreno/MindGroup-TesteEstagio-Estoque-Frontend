@@ -4,13 +4,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/global.scss';
 import { toastOptions } from '@/styles/toastify';
 import AuthProvider from '@/contexts/AuthContext';
+import ModalProvider from '@/contexts/ModalContext';
 import Router from '@/router';
 
 function App() {
   return (<>
     <ToastContainer {...toastOptions} />
     <AuthProvider>
-      <Router />
+      <ModalProvider>
+        <Router />
+      </ModalProvider>
     </AuthProvider>
   </>);
 }

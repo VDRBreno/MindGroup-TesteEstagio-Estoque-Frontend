@@ -11,11 +11,10 @@ import { FormattedError } from '@/utils/HandleError';
 import env from '@/utils/env';
 
 interface AuthContextProps {
-  userId: string;
-  sessionId: string;
+  authToken: string;
   isAuthenticated: boolean;
   removeFullAuthentication: () => void;
-  authenticateUser: (userId: string, sessionId: string) => void;
+  authenticateUser: (authToken: string) => void;
 }
 
 interface AuthProviderProps {
@@ -24,29 +23,28 @@ interface AuthProviderProps {
 
 export const AuthContext = createContext({} as AuthContextProps);
 
-const USER_ID_STORE_KEY = 'USER_ID';
-const SESSION_ID_STORE_KEY = 'SESSION_ID';
+const AUTH_TOKEN_STORE_KEY = 'AUTH_TOKEN';
 
 export default function AuthProvider({
   children
 }: AuthProviderProps) {
 
-  const [userId, setUserId] = useState<string>(getLocalStorageOrDefault(USER_ID_STORE_KEY, ''));
-  const [sessionId, setSessionId] = useState<string>(getLocalStorageOrDefault(SESSION_ID_STORE_KEY, ''));
+  const [authToken, setAuthToken] = useState<string>(getLocalStorageOrDefault(AUTH_TOKEN_STORE_KEY, ''));
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoadingAuthentication, setIsLoadingAuthentication] = useState(true);
 
   async function validSession() {
-    if(userId==='' && sessionId==='') {
+    if(authToken==='') {
       setIsLoadingAuthentication(false);
       return;
     }
 
     try {
 
-      const { data } = await api.post('/user/session/valid', {
-        user_id: userId,
-        session_id: sessionId
+      const { data } = await api.post('/user/session/valid', {}, {
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
       });
 
       if(data.success) {
@@ -77,18 +75,14 @@ export default function AuthProvider({
   }
 
   function removeFullAuthentication() {
-    setUserId('');
-    localStorage.removeItem(USER_ID_STORE_KEY);
-    setSessionId('');
-    localStorage.removeItem(SESSION_ID_STORE_KEY);
+    setAuthToken('');
+    localStorage.removeItem(AUTH_TOKEN_STORE_KEY);
     setIsAuthenticated(false);
   }
 
-  function authenticateUser(userId: string, sessionId: string) {
-    setUserId(userId);
-    localStorage.setItem(USER_ID_STORE_KEY, userId);
-    setSessionId(sessionId);
-    localStorage.setItem(SESSION_ID_STORE_KEY, sessionId);
+  function authenticateUser(authToken: string) {
+    setAuthToken(authToken);
+    localStorage.setItem(AUTH_TOKEN_STORE_KEY, authToken);
     setIsAuthenticated(true);
   }
 
@@ -98,8 +92,7 @@ export default function AuthProvider({
 
   return (
     <AuthContext.Provider value={{
-      userId,
-      sessionId,
+      authToken,
       isAuthenticated,
       removeFullAuthentication,
       authenticateUser
