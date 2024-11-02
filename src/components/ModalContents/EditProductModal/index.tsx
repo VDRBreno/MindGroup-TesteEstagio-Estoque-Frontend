@@ -10,16 +10,20 @@ import Button from '@/components/Button';
 import useAuth from '@/hooks/useAuth';
 import getAxiosErrorResponse from '@/utils/getAxiosErrorResponse';
 import { FormattedError } from '@/utils/HandleError';
+import useModal from '@/hooks/useModal';
 
 interface EditProductModalProps {
   product: IProduct;
+  onSubmit: () => void;
 }
 
 export default function EditProductModal({
-  product
+  product,
+  onSubmit
 }: EditProductModalProps) {
 
-  const { userId, sessionId} = useAuth();
+  const { authToken } = useAuth();
+  const { closeModal } = useModal();
 
   const [imageFile, setImageFile] = useState<File>();
   const [imageData, setImageData] = useState('');
@@ -51,19 +55,24 @@ export default function EditProductModal({
 
       setIsLoading(true);
 
-      const { data } = await api.patch('/product/update', {
-        user_id: userId,
-        session_id: sessionId,
+      await api.patch('/product/update', {
         id: productState.id,
         name: productState.name,
         description: productState.description,
         value: productState.value,
         image_base64: imageFile?imageData:undefined
+      }, {
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
       });
 
-      console.log(data);
-
       setIsLoading(false);
+
+      toast.success('Produto atualizado!', toastStyle.success);
+
+      onSubmit();
+      closeModal();
 
     } catch(error) {
       console.error(error);

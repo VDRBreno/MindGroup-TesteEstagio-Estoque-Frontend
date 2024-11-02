@@ -125,7 +125,7 @@ export default function Home() {
           productsLayout==='grid' ? (
             <div className={styles.ProductsGrid}>
               {products.map(product => (
-                <Product key={product.id} product={product} />
+                <Product key={product.id} product={product} updateProductList={getProducts} />
               ))}
             </div>
           )
