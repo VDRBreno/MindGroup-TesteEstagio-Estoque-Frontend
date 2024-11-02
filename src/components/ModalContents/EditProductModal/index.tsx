@@ -55,7 +55,7 @@ export default function EditProductModal({
 
       setIsLoading(true);
 
-      await api.patch('/product/update', {
+      const { data } = await api.patch('/product/update', {
         id: productState.id,
         name: productState.name,
         description: productState.description,
@@ -69,10 +69,14 @@ export default function EditProductModal({
 
       setIsLoading(false);
 
-      toast.success('Produto atualizado!', toastStyle.success);
+      if(data.product) {
+        
+        toast.success('Produto atualizado!', toastStyle.success);
 
-      onSubmit();
-      closeModal();
+        onSubmit();
+        closeModal();
+
+      }
 
     } catch(error) {
       console.error(error);
