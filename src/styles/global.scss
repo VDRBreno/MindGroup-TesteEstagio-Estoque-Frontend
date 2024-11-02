@@ -21,8 +21,7 @@ body {
   display: flex;
   flex-direction: column;
 
-  &.modal-overflow-hidden,
-  &.sidemenu-overflow-hidden {
+  &.modal-overflow-hidden {
     overflow: hidden;
   }
 }
