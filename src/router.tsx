@@ -4,17 +4,17 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
 import Loading from '@/layouts/Loading';
 import useAuth from '@/hooks/useAuth';
-const Home = lazy(() => import('@/pages/Home'));
 import Login from '@/pages/Login';
 import SignUp from '@/pages/SignUp';
+const Home = lazy(() => import('@/pages/Home'));
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path='*' element={<Navigate to='/' />} />
-        <Route path='/' element={<Login />} />
-        <Route path='/sign-up' element={<SignUp />} />
+        <Route path='/' element={<Page component={<Login />} />} />
+        <Route path='/sign-up' element={<Page component={<SignUp />} />} />
         <Route path='/home' element={<ProtectedLazyPage component={Home} />} />
       </Routes>
     </BrowserRouter>
@@ -22,8 +22,8 @@ export default function Router() {
 }
 
 interface LazyPageProps {
-  isProtected?: boolean;
   component: React.LazyExoticComponent<() => JSX.Element>;
+  isProtected?: boolean;
 }
 
 function LazyPage({ component, isProtected }: LazyPageProps) {
@@ -44,4 +44,18 @@ function ProtectedLazyPage({ component }: LazyPageProps) {
   if(!isAuthenticated)
     return <Navigate to='/' />;
   return <LazyPage component={component} isProtected />;
+}
+
+interface PageProps {
+  component: JSX.Element;
+  isProtected?: boolean;
+}
+
+function Page({ component, isProtected }: PageProps) {
+  const { isAuthenticated } = useAuth();
+  
+  if(!isProtected && isAuthenticated)
+    return <Navigate to='/home' />;
+  
+  return component;
 }
