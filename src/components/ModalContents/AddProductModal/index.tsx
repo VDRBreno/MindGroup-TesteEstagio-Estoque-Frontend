@@ -1,33 +1,36 @@
-import { IProduct } from '@/types/Product';
-
-import styles from './styles.module.scss';
 import { useState } from 'react';
-import api from '@/services/api';
+
 import { toast } from 'react-toastify';
-import { toastStyle } from '@/styles/toastify';
-import Input from '@/components/Input';
-import Button from '@/components/Button';
+
 import useAuth from '@/hooks/useAuth';
+import useModal from '@/hooks/useModal';
+import api from '@/services/api';
+import { toastStyle } from '@/styles/toastify';
 import getAxiosErrorResponse from '@/utils/getAxiosErrorResponse';
 import { FormattedError } from '@/utils/HandleError';
-import useModal from '@/hooks/useModal';
 
-interface EditProductModalProps {
-  product: IProduct;
+import styles from './styles.module.scss';
+import Input from '@/components/Input';
+import Button from '@/components/Button';
+
+interface AddProductModalProps {
   onSubmit: () => void;
 }
 
-export default function EditProductModal({
-  product,
+export default function AddProductModal({
   onSubmit
-}: EditProductModalProps) {
+}: AddProductModalProps) {
 
   const { authToken } = useAuth();
   const { closeModal } = useModal();
 
   const [imageFile, setImageFile] = useState<File>();
   const [imageData, setImageData] = useState('');
-  const [productState, setProductState] = useState<IProduct>({ ...product });
+  const [product, setProduct] = useState({
+    name: '',
+    description: '',
+    value: 1
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   function handleChangeImageFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -44,22 +47,27 @@ export default function EditProductModal({
       }
       reader.readAsDataURL(e.target.files[0]);
     } else {
-      toast.error('Ocorreu um erro ao tentar alterar a imagem!', toastStyle.error);
+      toast.error('Ocorreu ao tentar adicionar a imagem!', toastStyle.error);
     }
   }
 
   async function handleSubmit() {
     if(isLoading) return;
 
-    if(productState.name.trim()==='' ||
-      productState.description.trim()===''
+    if(product.name.trim()==='' ||
+      product.description.trim()===''
     ) {
       toast.error('Preencha os campos corretamente!', toastStyle.error);
       return;
     }
 
-    if(productState.value<=0) {
+    if(product.value<=0) {
       toast.error('O valor mínimo de um produto é R$ 1', toastStyle.error);
+      return;
+    }
+
+    if(!imageData) {
+      toast.error('Adicione um imagem!', toastStyle.error);
       return;
     }
 
@@ -67,12 +75,11 @@ export default function EditProductModal({
 
       setIsLoading(true);
 
-      const { data } = await api.patch('/product/update', {
-        id: productState.id,
-        name: productState.name.trim(),
-        description: productState.description.trim(),
-        value: productState.value,
-        image_base64: imageFile?imageData:undefined
+      const { data } = await api.post('/product/create', {
+        name: product.name.trim(),
+        description: product.description.trim(),
+        value: product.value,
+        image_base64: imageData
       }, {
         headers: {
           Authorization: `Bearer ${authToken}`
@@ -82,8 +89,8 @@ export default function EditProductModal({
       setIsLoading(false);
 
       if(data.product) {
-        
-        toast.success('Produto atualizado!', toastStyle.success);
+
+        toast.success('Produto criado!', toastStyle.success);
 
         onSubmit();
         closeModal();
@@ -108,14 +115,13 @@ export default function EditProductModal({
 
   return (
     <div id={styles.Container}>
-      <div className={styles.ImageContainer}>
-        {imageFile
-          ? <img className={styles.Image} src={'data:image/png;base64,'+imageData} alt='custom-image' />
-          : <img className={styles.Image} src={api.defaults.baseURL+'/images/'+product.image_name} alt='imagem' />
-        }
-      </div>
+      {imageFile ? (
+        <div className={styles.ImageContainer}>
+          <img className={styles.Image} src={'data:image/png;base64,'+imageData} alt='custom-image' />
+        </div>
+      ) :null}
 
-      <label htmlFor='input-product-image' className={styles.InputImage}>Alterar Imagem</label>
+      <label htmlFor='input-product-image' className={styles.InputImage}>Adicionar Imagem</label>
       <input
         style={{ display: 'none' }}
         id='input-product-image'
@@ -128,16 +134,16 @@ export default function EditProductModal({
       <div className={styles.InColumn}>
         <span>Nome:</span>
         <Input
-          value={productState.name}
-          onChange={value => setProductState(state => ({...state, name: value }))}
+          value={product.name}
+          onChange={value => setProduct(state => ({...state, name: value }))}
         />
       </div>
 
       <div className={styles.InColumn}>
         <span>Descrição:</span>
         <Input
-          value={productState.description}
-          onChange={value => setProductState(state => ({...state, description: value }))}
+          value={product.description}
+          onChange={value => setProduct(state => ({...state, description: value }))}
         />
       </div>
 
@@ -148,12 +154,12 @@ export default function EditProductModal({
             type: 'number',
             min: 1
           }}
-          value={productState.value}
-          onChange={value => setProductState(state => ({...state, value: +value }))}
+          value={product.value}
+          onChange={value => setProduct(state => ({...state, value: +value }))}
         />
       </div>
 
-      <Button onClick={handleSubmit} disabled={isLoading} style={{ backgroundColor: '#26a02a' }}>Atualizar produto</Button>
+      <Button onClick={handleSubmit} disabled={isLoading} style={{ backgroundColor: '#26a02a' }}>Criar produto</Button>
     </div>
   );
 }

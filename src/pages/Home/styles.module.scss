@@ -19,6 +19,14 @@
     max-width: global.$Screen_Max_Width;
     height: 100%;
     padding: 30px;
+    padding-bottom: 100px;
+  }
+
+  .AddProductButtonContainer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1;
   }
 
   .Title {

@@ -135,7 +135,7 @@ export default function Product({
         <img className={styles.Image} src={api.defaults.baseURL+'/images/'+product.image_name} alt={product.image_name} />
       </div>
       <div className={styles.Content}>
-        <span className={styles.CreatedAt}>{new Date(product.created_at).toLocaleDateString()}</span>
+        <span className={styles.CreatedAt}>{new Date(product.created_at).toLocaleString()}</span>
         <span className={styles.Name}>{product.name}</span>
         <div className={styles.InLine} style={{ justifyContent: 'space-between' }}>
           <span className={styles.Price}>R$ {product.value.toFixed(2).split('.').join(',')}</span>

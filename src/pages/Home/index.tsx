@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { FiSearch } from 'react-icons/fi';
+import { FiPlusCircle, FiSearch } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 import Header from '@/layouts/Header';
@@ -9,11 +9,13 @@ import Select, { IOption } from '@/components/Select';
 import PageController from '@/components/PageController';
 import Product from '@/components/Product';
 import Button from '@/components/Button';
+import AddProductModal from '@/components/ModalContents/AddProductModal';
 import { IProduct } from '@/types/Product';
 import getAxiosErrorResponse from '@/utils/getAxiosErrorResponse';
 import { FormattedError } from '@/utils/HandleError';
 import { toastStyle } from '@/styles/toastify';
 import useAuth from '@/hooks/useAuth';
+import useModal from '@/hooks/useModal';
 import api from '@/services/api';
 
 import styles from './styles.module.scss';
@@ -21,6 +23,7 @@ import styles from './styles.module.scss';
 export default function Home() {
 
   const { authToken } = useAuth();
+  const { openModal } = useModal();
 
   const orderBySelectOptions: IOption[] = [
     { id: 'name', value: 'Nome' },
@@ -43,7 +46,7 @@ export default function Home() {
 
       setIsLoadingProducts(true);
 
-      const { data } = await api.get(encodeURI(`/product/list?name=${searchProductName}&orderBy=${selectedOrderBy}&page=${currentPage}&limit=${limitProductsPerPage}`), {
+      const { data } = await api.get(encodeURI(`/product/list?name=${searchProductName}&orderBy=${selectedOrderBy}&orderByType=${getOrderByType()}&page=${currentPage}&limit=${limitProductsPerPage}`), {
         headers: {
           Authorization: `Bearer ${authToken}`
         }
@@ -73,6 +76,12 @@ export default function Home() {
     }
   }
 
+  function getOrderByType() {
+    if(selectedOrderBy==='created_at')
+      return 'desc';
+    return 'asc';
+  }
+
   function changePage(newPage: number) {
     setCurrentPage(newPage);
     toggleGetProductsSignal();
@@ -87,12 +96,22 @@ export default function Home() {
     setGetProductsSignal(state => !state);
   }
 
+  function openAddProductModal() {
+    openModal({ element: <AddProductModal onSubmit={getProducts} /> });
+  }
+
   useEffect(() => {
     getProducts();
   }, [getProductsSignal]);
 
   return (
     <div id={styles.Container}>
+      <div className={styles.AddProductButtonContainer}>
+        <Button onClick={openAddProductModal}>
+          <span>Adicionar produto</span>
+          <FiPlusCircle size={18} color='#FFFFFF' />
+        </Button>
+      </div>
       <Header />
       <div className={styles.Main}>
         <span className={styles.Title}>Produtos</span>
