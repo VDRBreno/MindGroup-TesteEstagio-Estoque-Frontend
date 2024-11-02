@@ -1,0 +1,27 @@
+#Container {
+  & {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    width: 100%;
+    padding: 30px;
+  }
+
+  .InLine {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .LogoContainer {
+    width: 150px;
+  }
+
+  .Logo {
+    width: 100%
+  }
+}

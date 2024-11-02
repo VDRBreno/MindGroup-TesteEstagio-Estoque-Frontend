@@ -39,8 +39,8 @@ export default function Login() {
 
       setIsLoading(false);
 
-      if(data.userId && data.sessionId) {
-        authenticateUser(data.userId, data.sessionId);
+      if(data.token) {
+        authenticateUser(data.token);
         navigate('/home');
       } else {
         throw new FormattedError({
@@ -78,13 +78,17 @@ export default function Login() {
         <Input
           value={email}
           onChange={setEmail}
-          placeholder='E-mail'
+          props={{
+            placeholder: 'E-mail'
+          }}
         />
         <Input
-          type='password'
           value={password}
           onChange={setPassword}
-          placeholder='Senha'
+          props={{
+            type: 'password',
+            placeholder: 'Senha'
+          }}
         />
         <Button disabled={isLoading} type='submit' style={{ width: '100%' }}>Entrar</Button>
         <span>ou</span>

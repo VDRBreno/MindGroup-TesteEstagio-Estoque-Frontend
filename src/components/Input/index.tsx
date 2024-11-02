@@ -3,22 +3,26 @@ import { HTMLAttributes, InputHTMLAttributes } from 'react';
 import styles from './styles.module.scss';
 
 interface CustomInputProps {
-  value: string;
+  value: string | number;
   onChange: (value: string) => void;
+
+  props?: InputHTMLAttributes<HTMLInputElement>;
 
   containerStyle?: HTMLAttributes<HTMLDivElement>['style'];
 }
 
-type InputProps =
-  Omit<InputHTMLAttributes<HTMLInputElement>, keyof CustomInputProps>
-  & CustomInputProps;
-
-export default function Input(props: InputProps) {
+export default function Input({
+  value,
+  onChange,
+  props,
+  containerStyle
+}: CustomInputProps) {
   return (
-    <div id={styles.Container} style={props.containerStyle}>
+    <div id={styles.Container} style={containerStyle}>
       <input
         {...props}
-        onChange={e => props.onChange(e.target.value)}
+        value={value}
+        onChange={e => onChange(e.target.value)}
       />
     </div>
   );

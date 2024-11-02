@@ -1,0 +1,61 @@
+#Container {
+  & {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  
+    width: 100%;
+  }
+
+  .PageButtons {
+    display: flex;
+    align-items: center;
+  
+    height: 35px;
+    overflow: hidden;
+    border-radius: 5px;
+    border: 1px solid #4C92EE;
+  }
+
+  .PageButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    height: 100%;
+    padding: 7px 15px;
+    background-color: #4C92EE;
+    transition: filter .2s;
+    color: #FFFFFF;
+    font-weight: 600;
+  
+    &:hover {
+      cursor: pointer;
+      filter: brightness(85%);
+    }
+  }
+
+  .LabelPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+    padding: 7px 15px;
+    background-color: #FFFFFF;
+    color: #0c0c0c;
+    font-weight: 700;
+  }
+
+  .LabelPageIndicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    height: 100%;
+    padding: 7px 15px;
+    background-color: #4C92EE;
+    color: #FFFFFF;
+    font-weight: 600;
+  }
+}

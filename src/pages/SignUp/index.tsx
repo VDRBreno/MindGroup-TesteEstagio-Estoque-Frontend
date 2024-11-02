@@ -64,9 +64,9 @@ export default function SignUp() {
 
       setIsLoading(false);
 
-      if(data.userId && data.sessionId) {
+      if(data.authToken) {
         toast.success('Usuário cadastrado!', toastStyle.success);
-        authenticateUser(data.userId, data.sessionId);
+        authenticateUser(data.authToken);
         navigate('/home');
       } else {
         throw new FormattedError({
@@ -114,28 +114,36 @@ export default function SignUp() {
         <Input
           value={name}
           onChange={setName}
-          placeholder='Nome'
-          required
+          props={{
+            placeholder: 'Nome',
+            required: true
+          }}
         />
         <Input
           value={email}
           onChange={value => setEmail(value.trim())}
-          placeholder='E-mail'
-          required
+          props={{
+            placeholder: 'E-mail',
+            required: true
+          }}
         />
         <Input
-          type='password'
           value={password}
           onChange={value => setPassword(value.trim())}
-          placeholder='Senha'
-          required
+          props={{
+            type: 'password',
+            placeholder: 'Senha',
+            required: true
+          }}
         />
         <Input
-          type='password'
           value={passwordRepeat}
           onChange={value => setPasswordRepeat(value.trim())}
-          placeholder='Repita a senha'
-          required
+          props={{
+            type: 'password',
+            placeholder: 'Repita a senha',
+            required: true
+          }}
         />
         <div className={styles.PasswordNotEqualContainer}>
           {shouldShowPasswordNotEqualAlert() ?<span className={styles.PasswordNotEqual}>Senhas não coincidem</span> :null}

@@ -1,0 +1,79 @@
+#Container {
+  & {
+    display: flex;
+
+    width: fit-content;
+    position: relative;
+    z-index: 1;
+    user-select: none;
+  }
+
+  .Selector {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  
+    width: 100%;
+    background-color: #FFFFFF;
+    padding: 10px;
+    border-radius: 7px;
+    border: solid 1.5px #D4D4D4;
+    transition: filter .2s;
+  
+    &:hover {
+      cursor: pointer;
+      filter: brightness(80%);
+    }
+  }
+
+  .Value {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .Options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  
+    min-width: 200px;
+    max-height: 500px;
+    overflow-y: scroll;
+    padding: 10px;
+    background-color: #FFFFFF;
+    border-radius: 7px;
+    border: solid 1.5px #D4D4D4;
+    position: absolute;
+    bottom: -5px;
+    transform: translateY(100%);
+  
+    &::-webkit-scrollbar {
+      background: transparent;
+    }
+  }
+
+  .Option {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+  
+    font-weight: 600;
+    font-size: 1rem;
+    transition: filter .2s;
+  
+    &.OptionSelected {
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+    }
+  
+    &:hover {
+      cursor: pointer;
+      filter: brightness(80%);
+    }
+  }
+}
