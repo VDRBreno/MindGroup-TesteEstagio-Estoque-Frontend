@@ -33,7 +33,7 @@ function LazyPage({ component, isProtected }: LazyPageProps) {
     return <Navigate to='/home' />;
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading message='Carregando..' />}>
       {createElement(component)}
     </Suspense>
   );
