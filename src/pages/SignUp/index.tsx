@@ -63,10 +63,10 @@ export default function SignUp() {
       });
 
       setIsLoading(false);
-
-      if(data.authToken) {
+      
+      if(data.token) {
         toast.success('Usuário cadastrado!', toastStyle.success);
-        authenticateUser(data.authToken);
+        authenticateUser(data.token);
         navigate('/home');
       } else {
         throw new FormattedError({
