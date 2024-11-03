@@ -41,5 +41,6 @@ yarn dev
 
 - TypeScript
 - React
+- Vite
 - Sass
 - Context API
